@@ -9,7 +9,8 @@
 #define CHAR_SIZE 5
 #define VOID_GAME 0
 #define CODE_INSTRUCTION 1
-#define CODE_EXIT 2
+#define CODE_CREDIT 2
+#define CODE_EXIT 10
 #define BORDER 50
 #define NULL 0
 #define HEART_CHAR 3
@@ -18,7 +19,7 @@
 #define CHAR_SIZE 10
 // consts
 
-void game();void init();int menu();void instructions();
+void game();void init();int menu();void instructions();void credit();
 
 
 void init()
@@ -32,9 +33,10 @@ int menu()
 	char key_pressed=NULL;
 	int x=MAX_X/3;
 	int y[BUFSIZ];
-	const int MAX_SIZE_OPTIONS=2,MIN_SIZE_OPTIONS=0;
+	const int MAX_SIZE_OPTIONS=3,MIN_SIZE_OPTIONS=0;
 	y[0]=MAX_Y/4;
-	for ( int i=1;i<=MAX_SIZE_OPTIONS;i++)
+	int i=0;
+	for (  i=1;i<=MAX_SIZE_OPTIONS;i++)
 	{
 		y[i]=y[0]+i*STEP;
 	}
@@ -42,12 +44,12 @@ int menu()
 	char names_options[BUFSIZ][BUFSIZ]={NULL};
 	strcpy(names_options[0],"GAME");
 	strcpy(names_options[1],"INSTROCTIONS");
-	strcpy(names_options[2],"EXIT");
+	strcpy(names_options[2],"CREDIT");
+	strcpy(names_options[3],"EXIT");
 	setcolor(BLUE);
 	outtextxy(x,y[0],names_options[0]);
 	setcolor(WHITE);
-	outtextxy(x,y[1],names_options[1]);
-	outtextxy(x,y[2],names_options[2]);
+	for ( i=1;i<=MAX_SIZE_OPTIONS;outtextxy(x,y[i],names_options[i]),i++);
 	fprintf(stdout,"%d %d",KEY_UP,KEY_DOWN);
 	while ( TRUE )
 	{
@@ -58,13 +60,16 @@ int menu()
 			{
 				if ( cursor == VOID_GAME )
 				{
-					return VOID_GAME; // game = 1
+					return VOID_GAME; // game = 0
 				} else if ( cursor == CODE_INSTRUCTION)
 				{
-					return CODE_INSTRUCTION; // instroctions = 2
-				} else if ( cursor == CODE_EXIT )
+					return CODE_INSTRUCTION; // instroctions = 1
+				} else if ( cursor == CODE_CREDIT )
 				{
-					return CODE_EXIT; // exit = 0
+					return CODE_CREDIT; // 2
+				} else if ( cursor == MAX_SIZE_OPTIONS )
+				{
+					return CODE_EXIT; // exit = 10
 				}
 				break;
 			};
@@ -120,9 +125,21 @@ void instructions()
 	outtextxy(x,y,"PAUSE - SPACE" );
 	y+=STEP;
 	outtextxy(x,y,"EXIT  - ESC" );
-	y+=4*STEP;
+	y=MAX_Y/8*7;
 	outtextxy(x,y,"  PRESS ENTER TO CONTINUE" );
 	while ( getch() != KEY_ENTER );
+}
+void credit()
+{
+	cleardevice();
+	int x=MAX_X/3,y=MAX_Y/4;
+	setcolor(WHITE);
+	settextstyle(EUROPEAN_FONT,HORIZ_DIR,3);
+	outtextxy(x,y,"GAME WAS CREATED BY SHADVOLL" );
+	y=MAX_Y/8*7;
+	outtextxy(x,y,"  PRESS ENTER TO CONTINUE" );
+	while ( getch() != KEY_ENTER );
+	return;
 }
 void game()
 {
@@ -204,7 +221,7 @@ void game()
 			break;
 		}
 		//game starts
-		int player1_x=MAX_X/2-50,player1_y=MAX_Y/2,player2_x=MAX_X/2+50,player2_y=MAX_Y/2;
+		int player1_x=MAX_X/2-250,player1_y=MAX_Y/2,player2_x=MAX_X/2+250,player2_y=MAX_Y/2;
 		char player1_move_x=1,player1_move_y=0,player2_move_x=-1,player2_move_y=0;
 		putpixel(player1_x,player1_y,RED);
 		putpixel(player2_x,player2_y,LIGHTBLUE);
@@ -295,6 +312,7 @@ void game()
 						{
 							delay(100);
 						}
+						break;
 					}
 				case KEY_ESC:
 					{
@@ -325,6 +343,11 @@ void game()
 		}
 	}while( (lifes_player1 != 0 ) && ( lifes_player2 != 0 ) );
 	getch();
+	setcolor(WHITE);
+	settextstyle(EUROPEAN_FONT,HORIZ_DIR,3);
+	outtextxy(MAX_X/4,MAX_Y/3,"GAME WAS CREATED BY SHADVOLL" );
+	outtextxy(MAX_X/3,MAX_Y*8/9,"PRESS ENTER TO CONTINUE");
+	while ( getch() != KEY_ENTER );
 }
 int main()
 {
@@ -342,6 +365,11 @@ int main()
 		case CODE_INSTRUCTION:
 			{
 				instructions();
+				break;
+			}
+		case CODE_CREDIT:
+			{
+				credit();
 				break;
 			}
 		case CODE_EXIT:
