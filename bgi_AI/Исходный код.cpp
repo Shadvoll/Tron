@@ -141,16 +141,6 @@ void credit()
 	while ( getch() != KEY_ENTER );
 	return;
 }
-int AI_move_x(int player1_x,int player1_y,int player1_move_x,int player1_move_y,
-			  int player2_x,int player2_y,int player2_move_x,int player2_move_y)
-{
-	return 0;
-}
-int AI_move_y(int player1_x,int player1_y,int player1_move_x,int player1_move_y,
-			  int player2_x,int player2_y,int player2_move_x,int player2_move_y)
-{
-	return 0;
-}
 void game()
 {
 	cleardevice();
@@ -332,10 +322,9 @@ void game()
 					break;
 				}
 			}
-			player1_move_x=AI_move_x(player1_x,player1_y,player1_move_x,player1_move_y,player2_x,player2_y,player2_move_x,player2_move_y);
-			player1_move_y=AI_move_y(player1_x,player1_y,player1_move_x,player1_move_y,player2_x,player2_y,player2_move_x,player2_move_y);
-			player1_x+=AI_move_x(player1_x,player1_y,player1_move_x,player1_move_y,player2_x,player2_y,player2_move_x,player2_move_y);
-			player1_y+=AI_move_y(player1_x,player1_y,player1_move_x,player1_move_y,player2_x,player2_y,player2_move_x,player2_move_y);
+			// AI tactics will be survuving
+			player1_move_x=
+			player1_move_y=
 			player2_x+=player2_move_x;
 			player2_y+=player2_move_y;
 		}
